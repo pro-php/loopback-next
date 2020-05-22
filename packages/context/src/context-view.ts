@@ -295,3 +295,115 @@ export function createViewGetter<T = unknown>(
   view.open();
   return view.asGetter(session);
 }
+
+export interface ContextView {
+  /**
+   * The "bind" event is emitted when a new binding is added to the view.
+   *
+   * @param eventName The name of the event - always `bind`.
+   * @param listener The listener function to call when the event is emitted.
+   */
+  on(
+    eventName: 'bind',
+    listener: <T>(event: ContextViewEvent<T>) => void,
+  ): this;
+
+  /**
+   * The "unbind" event is emitted a new binding is removed from the view.
+   *
+   * @param eventName The name of the event - always `unbind`.
+   * @param listener The listener function to call when the event is emitted.
+   */
+  on(
+    eventName: 'unbind',
+    listener: <T>(event: ContextViewEvent<T> & {cachedValue?: T}) => void,
+  ): this;
+
+  /**
+   * The "refresh" event is emitted when the view is refreshed as bindings are
+   * added/removed.
+   *
+   * @param eventName The name of the event - always `refresh`.
+   * @param listener The listener function to call when the event is emitted.
+   */
+  on(eventName: 'refresh', listener: () => void): this;
+
+  /**
+   * The "resolve" event is emitted when the cached values are resolved and
+   * updated.
+   *
+   * @param eventName The name of the event - always `refresh`.
+   * @param listener The listener function to call when the event is emitted.
+   */
+  // eslint-disable-next-line @typescript-eslint/unified-signatures
+  on(eventName: 'refresh', listener: <T>(result: T[]) => void): this;
+
+  /**
+   * The "close" event is emitted when the view is closed (stopped observing
+   * context events)
+   *
+   * @param eventName The name of the event - always `close`.
+   * @param listener The listener function to call when the event is emitted.
+   */
+  // eslint-disable-next-line @typescript-eslint/unified-signatures
+  on(eventName: 'close', listener: () => void): this;
+
+  // The generic variant inherited from EventEmitter
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  on(event: string | symbol, listener: (...args: any[]) => void): this;
+
+  /**
+   * The "bind" event is emitted when a new binding is added to the view.
+   *
+   * @param eventName The name of the event - always `bind`.
+   * @param listener The listener function to call when the event is emitted.
+   */
+  once(
+    eventName: 'bind',
+    listener: <T>(event: ContextViewEvent<T>) => void,
+  ): this;
+
+  /**
+   * The "unbind" event is emitted a new binding is removed from the view.
+   *
+   * @param eventName The name of the event - always `unbind`.
+   * @param listener The listener function to call when the event is emitted.
+   */
+  once(
+    eventName: 'unbind',
+    listener: <T>(event: ContextViewEvent<T> & {cachedValue?: T}) => void,
+  ): this;
+
+  /**
+   * The "refresh" event is emitted when the view is refreshed as bindings are
+   * added/removed.
+   *
+   * @param eventName The name of the event - always `refresh`.
+   * @param listener The listener function to call when the event is emitted.
+   */
+  once(eventName: 'refresh', listener: () => void): this;
+
+  /**
+   * The "resolve" event is emitted when the cached values are resolved and
+   * updated.
+   *
+   * @param eventName The name of the event - always `refresh`.
+   * @param listener The listener function to call when the event is emitted.
+   */
+  // eslint-disable-next-line @typescript-eslint/unified-signatures
+  once(eventName: 'refresh', listener: <T>(result: T[]) => void): this;
+
+  /**
+   * The "close" event is emitted when the view is closed (stopped observing
+   * context events)
+   *
+   * @param eventName The name of the event - always `close`.
+   * @param listener The listener function to call when the event is emitted.
+   */
+  // eslint-disable-next-line @typescript-eslint/unified-signatures
+  once(eventName: 'close', listener: () => void): this;
+
+  // The generic variant inherited from EventEmitter
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  once(event: string | symbol, listener: (...args: any[]) => void): this;
+}
